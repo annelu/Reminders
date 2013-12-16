@@ -3,5 +3,15 @@
 <head></head>
 <body>
   <h1>Reminders</h1>
+  <div ng-controller="createNewReminder">
+    <input type="text" placeholder="Create new reminder"></input>
+    <input type="number" placeholder="Enter number of minutes between reminders"></input>
+    <button type="submit">Submit</button>
+  </div>
+  
+  <div ng-controller="currentReminders"></div>  
+  <div ng-controller="upcomingReminders"></div>
+  <link rel="stylesheet" type="text/css" href="styles/styles.css" />
+  <script src="Lib/angular.min.js"></script>
 </body>
 </html>
