@@ -31,6 +31,17 @@ var sendResponse = function(sendMe, request,response,status, contentType) {
   response.end();
 };
 
+var sendData = function(request, response, statuscode){
+  var reminderData = [];
+  Reminder.findAll().success(function(results){
+    for (var i = 0; i < results.length; i++) {
+      reminderData.push(results[i].dataValues);
+    }
+    reminderData = JSON.stringify(reminderData);
+    sendResponse(reminderData, request, response, statuscode);
+  });
+}
+
 exports.handleRequest = function(request, response){
   var urlParse = url.parse(request.url);
   if (request.method === 'GET'){
@@ -42,14 +53,15 @@ exports.handleRequest = function(request, response){
         sendResponse(html, request,response);
       });
     } else if (urlParse.pathname === '/reminders') {
-      var reminderData = [];
-      Reminder.findAll().success(function(results){
-        for (var i = 0; i < results.length; i++) {
-          reminderData.push(results[i].dataValues);
-        }
-        reminderData = JSON.stringify(reminderData);
-        sendResponse(reminderData, request, response);
-      });
+      // var reminderData = [];
+      // Reminder.findAll().success(function(results){
+      //   for (var i = 0; i < results.length; i++) {
+      //     reminderData.push(results[i].dataValues);
+      //   }
+      //   reminderData = JSON.stringify(reminderData);
+      //   sendResponse(reminderData, request, response);
+      // });
+      sendData(request, response);
     } else {
       fs.readFile('../Client' + urlParse.pathname, function(err, data) {
         if (err) {throw err;}
@@ -62,6 +74,7 @@ exports.handleRequest = function(request, response){
     //Handles POSTs for /reminders
     if (urlParse.pathname === '/reminders'){  
       var body = '';
+      //create and save new reminder
       request.on('data', function(data){
         body += data;
       });
@@ -70,7 +83,8 @@ exports.handleRequest = function(request, response){
         var newReminder = Reminder.build(reminderData);
         newReminder.save();
       });
-      sendResponse('success!', request, response, 201)
+      //send back data to update
+      sendData(request, response, 201);
     } 
     else if (urlParse.pathname === '/done') {
       var body = '';
@@ -84,6 +98,7 @@ exports.handleRequest = function(request, response){
             reminder.updateAttributes({duedate: body.duedate});
           }
         })
+      sendData(request, response, 201);
       });
     } else if (urlParse.pathname === '/cancel') {
       var body = '';
@@ -98,6 +113,7 @@ exports.handleRequest = function(request, response){
             reminder.destroy();
           }
         })
+        sendData(request, response, 201);
       });
 
     }

@@ -15,17 +15,22 @@ angular.module('longTermApp', [])
     }).then(function(data){
       $scope.reminders = data;
     })
+
+    delete $scope.reminderName;
+    delete $scope.interval;
   };
 })
 .controller('currentReminders', function($scope, $http){
   var now = new Date();
   now = Date.parse(now.toISOString());
-  $http({
-    method: 'GET',
-    url: '/reminders'
-  }).then(function(data){
-    $scope.reminders = data.data;
-  });
+  var updatePage = function(){
+    $http({
+      method: 'GET',
+      url: '/reminders'
+    }).then(function(data){
+      $scope.reminders = data.data;
+    });
+  };
 
   $scope.beforePresent = function(reminder){
     var otherdate = Date.parse(reminder.duedate);
@@ -45,9 +50,12 @@ angular.module('longTermApp', [])
       method: 'POST',
       url: '/cancel',
       data: id
+    }).then(function(data) {
+      $scope.reminders = data.data;
     })
   };
   $scope.done = function(id, interval){
+    //change entry duedate +interval into the future
     var now = new Date();
     var date = new Date(now.getTime() + interval * 60000);
     var newduedate = date.toISOString();
@@ -58,9 +66,11 @@ angular.module('longTermApp', [])
       method: 'POST',
       url: '/done',
       data: body
+    }).then(function(data){
+      $scope.reminders = data.data;
     })
   };
-
-
+  updatePage();
+  setInterval(updatePage, 1000);
 
 })
