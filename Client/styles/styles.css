@@ -12,10 +12,17 @@ body {
   clear: both;
 }
 
-input[type='text'], input[type='number'] {
-  float: left;
+input[type='text'], input[type='number']{
   width: 250px;
   margin: 10px;
+  display: inline;
+}
+select {
+  width: 250px;
+  margin: 10px;
+}
+table {
+  width: 80%;
 }
 
 @-webkit-keyframes demo {

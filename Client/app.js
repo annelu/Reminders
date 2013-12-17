@@ -2,9 +2,9 @@ angular.module('longTermApp', [])
 .controller('createNewReminder', function($scope, $http){
   $scope.createNewReminder = function(){
     var now = new Date();
-    var date = new Date(now.getTime() + $scope.interval * 60000);
+    var date = new Date(now.getTime() + $scope.interval * $scope.time);
     $scope.reminder = {task: $scope.reminderName,
-    interval: $scope.interval,
+    interval: $scope.interval * $scope.time,
     duedate: date.toISOString()
     };
 
@@ -57,7 +57,7 @@ angular.module('longTermApp', [])
   $scope.done = function(id, interval){
     //change entry duedate +interval into the future
     var now = new Date();
-    var date = new Date(now.getTime() + interval * 60000);
+    var date = new Date(now.getTime() + interval);
     var newduedate = date.toISOString();
     var body = {};
     body.id = id;
