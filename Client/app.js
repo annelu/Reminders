@@ -1,9 +1,12 @@
 angular.module('longTermApp', [])
 .controller('createNewReminder', function($scope, $http){
   $scope.createNewReminder = function(){
+    var now = new Date();
+    var date = new Date(now.getTime() + $scope.interval * 60000);
     $scope.reminder = {task: $scope.reminderName,
     interval: $scope.interval,
-    duedate: null};
+    duedate: date.toISOString()
+    };
 
     $http({
       method: 'POST',
@@ -11,7 +14,6 @@ angular.module('longTermApp', [])
       data: $scope.reminder
     }).then(function(data){
       $scope.reminders = data;
-      console.log($scope.reminders);
     })
   };
 })
@@ -20,8 +22,28 @@ angular.module('longTermApp', [])
     method: 'GET',
     url: '/reminders'
   }).then(function(data){
-    $scope.reminders = data.data;
-    console.log($scope.reminders);
-  })
+    $scope.currentReminders = [];
+    var now = new Date();
+    now = Date.parse(now.toISOString());
+    $scope.now = now;
+    $scope.upcomingReminders = [];
+
+    for (var i = 0; i < data.data.length; i++) {
+      if (Date.parse(data.data[i].duedate) < now) {
+        $scope.currentReminders.push(data.data[i]);
+      } else {
+        $scope.upcomingReminders.push(data.data[i]);
+      }
+    }
+  });
+  $scope.cancel = function(){
+    //delete entry
+  };
+  $scope.done = function(id){
+    console.log(id);
+    //change duedate of entry to be currentime + interval
+  };
+
+
+
 })
-.controller('upcomingReminders', function(){})

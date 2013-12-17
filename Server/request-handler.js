@@ -19,12 +19,12 @@ headers['Content-Type'] = "text/plain";
 var Reminder = sequelize.define('Reminder', {
   task: Sequelize.STRING,
   interval: Sequelize.INTEGER,
-  duedate: Sequelize.DATE
+  duedate: Sequelize.STRING
 })
 
 Reminder.sync();
 
-var sendResponse = function(sendMe, request,response,status) {
+var sendResponse = function(sendMe, request,response,status, contentType) {
   status = status || 200;
   response.writeHeader(status, headers);
   response.write(sendMe);
@@ -51,11 +51,11 @@ exports.handleRequest = function(request, response){
         sendResponse(reminderData, request, response);
       });
     } else {
-      var contentType = mime[path.extname(urlParse.pathname)];
-      headers['Content-Type'] = contentType;
-      fs.readFile('../Client' + urlParse.pathname, function(err, html) {
+      fs.readFile('../Client' + urlParse.pathname, function(err, data) {
         if (err) {throw err;}
-        sendResponse(html, request,response);
+        var contentType = mime[path.extname(urlParse.pathname)];
+        headers['Content-Type'] = contentType;
+        sendResponse(data, request,response);
       });
     }
   } else {
@@ -66,8 +66,9 @@ exports.handleRequest = function(request, response){
     });
     request.on('end', function(){
       var reminderData = JSON.parse(body);
-      var currentDate = new Date();
-      reminderData.duedate = new Date(currentDate.getTime() + reminderData.interval * 60000);
+      // var currentDate = new Date();
+      // var duedate = new Date(currentDate.getTime() + reminderData.interval * 60000);
+      // reminderData.duedate = duedate;
       var newReminder = Reminder.build(reminderData);
       newReminder.save();
     });
