@@ -1,0 +1,37 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Reminders</title>
+    <link rel="stylesheet" type="text/css" href="styles.css" />
+    <style>
+      body {
+        min-width: 357px;
+        overflow-x: hidden;
+      }
+
+      img {
+        margin: 5px;
+        border: 2px solid black;
+        vertical-align: middle;
+        width: 75px;
+        height: 75px;
+      }
+    </style>
+    <script src="js/jquery-1.10.2.min.map"></script>
+    <script src="js/jquery-1.10.2.min.js"></script>
+    <script src="js/popup.js"></script>
+  </head>
+  <body>
+    <h1>Do It Now!!</h1>
+    <div class="reminders"></div>
+    <div class="createNewReminder">
+      <h1>Create a New Reminder!</h1>
+      <form>
+        <input type="text" class="task" placeholder="Enter task">
+        <input type="number" class="number" placeholder="Minutes">
+        <button>Submit</button>
+      </form>
+    </div>
+  </body>
+</html>
+

@@ -7,7 +7,6 @@ angular.module('longTermApp', [])
     interval: $scope.interval * $scope.time,
     duedate: date.toISOString()
     };
-
     $http({
       method: 'POST',
       url: '/reminders',
