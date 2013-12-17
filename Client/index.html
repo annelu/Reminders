@@ -24,15 +24,28 @@
           <td>Done?</td>
           <td>Cancel</td>
         </tr>
-        <tr ng-repeat="reminder in currentReminders" class="currentReminder">
+        <tr ng-repeat="reminder in reminders | filter: beforePresent" class="currentReminder">
           <td> {{ reminder.task }} </td>
           <td> {{ reminder.duedate | date: 'medium'}} </td>
-          <td> <input type="checkbox" value="done" ng-click="done(reminder.id)"> </td>
+          <td> <input type="checkbox" value="done" ng-click="done(reminder.id, reminder.interval)"> </td>
           <td> <input type="checkbox" value="cancel" ng-click="cancel(reminder.id)"> </td>
         </tr>
       <table>
       <h1>Upcoming Reminders</h1>
-      <div ng-repeat="reminder in upcomingReminders">{{ reminder.task }} | {{ reminder.duedate | date: 'medium'}} </div>
+        <table>
+        <tr>
+          <td>Task</td>
+          <td>Active Date</td>
+          <td>Done?</td>
+          <td>Cancel</td>
+        </tr>
+        <tr ng-repeat="reminder in reminders | filter: afterPresent" class="upcomingReminder">
+          <td> {{ reminder.task }} </td>
+          <td> {{ reminder.duedate | date: 'medium'}} </td>
+          <td> <input type="checkbox" value="done" ng-click="done(reminder.id, reminder.interval)"> </td>
+          <td> <input type="checkbox" value="cancel" ng-click="cancel(reminder.id)"> </td>
+        </tr>
+      <table>
     </div>  
 
   </div>

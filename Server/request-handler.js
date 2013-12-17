@@ -60,18 +60,46 @@ exports.handleRequest = function(request, response){
     }
   } else {
     //Handles POSTs for /reminders
-    var body = '';
-    request.on('data', function(data){
-      body += data;
-    });
-    request.on('end', function(){
-      var reminderData = JSON.parse(body);
-      // var currentDate = new Date();
-      // var duedate = new Date(currentDate.getTime() + reminderData.interval * 60000);
-      // reminderData.duedate = duedate;
-      var newReminder = Reminder.build(reminderData);
-      newReminder.save();
-    });
-    sendResponse('success!', request, response, 201)
+    if (urlParse.pathname === '/reminders'){  
+      var body = '';
+      request.on('data', function(data){
+        body += data;
+      });
+      request.on('end', function(){
+        var reminderData = JSON.parse(body);
+        var newReminder = Reminder.build(reminderData);
+        newReminder.save();
+      });
+      sendResponse('success!', request, response, 201)
+    } 
+    else if (urlParse.pathname === '/done') {
+      var body = '';
+      request.on('data', function(data){
+        body += data;
+      });
+      request.on('end', function(){
+        body = JSON.parse(body);
+        Reminder.find({where: {id: body.id}}).on('success', function(reminder){
+          if (reminder) {
+            reminder.updateAttributes({duedate: body.duedate});
+          }
+        })
+      });
+    } else if (urlParse.pathname === '/cancel') {
+      var body = '';
+      request.on('data', function(data){
+        body += data;
+      });
+
+      request.on('end', function(){
+        body = JSON.parse(body);
+        Reminder.find({where: {id: body}}).on('success', function(reminder){
+          if (reminder) {
+            reminder.destroy();
+          }
+        })
+      });
+
+    }
   }
 };

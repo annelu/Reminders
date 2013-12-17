@@ -18,30 +18,47 @@ angular.module('longTermApp', [])
   };
 })
 .controller('currentReminders', function($scope, $http){
+  var now = new Date();
+  now = Date.parse(now.toISOString());
   $http({
     method: 'GET',
     url: '/reminders'
   }).then(function(data){
-    $scope.currentReminders = [];
-    var now = new Date();
-    now = Date.parse(now.toISOString());
-    $scope.now = now;
-    $scope.upcomingReminders = [];
-
-    for (var i = 0; i < data.data.length; i++) {
-      if (Date.parse(data.data[i].duedate) < now) {
-        $scope.currentReminders.push(data.data[i]);
-      } else {
-        $scope.upcomingReminders.push(data.data[i]);
-      }
-    }
+    $scope.reminders = data.data;
   });
-  $scope.cancel = function(){
+
+  $scope.beforePresent = function(reminder){
+    var otherdate = Date.parse(reminder.duedate);
+    if (otherdate < now) {
+      return reminder;
+    }
+  }
+  $scope.afterPresent = function(reminder){
+    var otherdate = Date.parse(reminder.duedate);
+    if (otherdate > now) {
+      return reminder;
+    }
+  }
+  $scope.cancel = function(id){
     //delete entry
+    $http({
+      method: 'POST',
+      url: '/cancel',
+      data: id
+    })
   };
-  $scope.done = function(id){
-    console.log(id);
-    //change duedate of entry to be currentime + interval
+  $scope.done = function(id, interval){
+    var now = new Date();
+    var date = new Date(now.getTime() + interval * 60000);
+    var newduedate = date.toISOString();
+    var body = {};
+    body.id = id;
+    body.duedate = newduedate;
+    $http({
+      method: 'POST',
+      url: '/done',
+      data: body
+    })
   };
 
 
