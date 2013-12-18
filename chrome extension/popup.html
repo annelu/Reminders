@@ -3,6 +3,7 @@
   <head>
     <title>Reminders</title>
     <link rel="stylesheet" type="text/css" href="styles.css" />
+    <link rel="stylesheet" type="text/css" href="foundation.css" />
     <style>
       body {
         min-width: 357px;
@@ -22,16 +23,18 @@
     <script src="js/popup.js"></script>
   </head>
   <body>
-    <h1>Do It Now!!</h1>
-    <div class="reminders"></div>
-    <div class="createNewReminder">
-      <h1>Create a New Reminder!</h1>
-      <form>
-        <input type="text" class="task" placeholder="Enter task">
-        <input type="number" class="number" placeholder="Minutes">
-        <button>Submit</button>
-      </form>
-    </div>
+    <div class="container">
+      <h1>Do It Now!!</h1>
+      <ul class="reminders"></ul>
+      <div class="createNewReminder">
+        <h1>Create a New Reminder!</h1>
+        <form>
+          <input type="text" class="task" placeholder="Enter task">
+          <input type="number" class="number" placeholder="Minutes">
+          <button>Submit</button>
+        </form>
+      </div>
+  </div>
   </body>
 </html>
 

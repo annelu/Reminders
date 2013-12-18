@@ -1,37 +1,25 @@
 body {
-  font-family: sans-serif;
+  font-family: Arial, sans-serif;
 }
-
-div {
+h1 {
+    font-size: 20px;
+    /*padding: 10px;*/
+}
+.container {
     padding: 10px;
+    margin: 10px;
+    font-size: 13px;
 }
 
-@-webkit-keyframes demo {
-    0% {
-        background-color: red;
-        opacity: 0.5;
-        color: #FFFFFF;
-    }
-    22% {
-        background-color: red;
-        opacity: 0.75;
-        color: #FFFFFF;
-    }
-    77% {
-        background-color: #FFFFFF;
-    }
-    100% {
-        background-color: #FFFFFF;
-    }
+ul {
+    list-style-type: none;
+    padding: 0px;
 }
-    
-.currentReminder{
-  -webkit-animation-name: demo;
-    -webkit-animation-duration: 1000ms;
-    -webkit-animation-iteration-count: infinite;
-    -webkit-animation-timing-function: ease-in-out;
-  -moz-animation-name: demo;
-    -moz-animation-duration: 500ms;
-    -moz-animation-iteration-count: 1;
-    -moz-animation-timing-function: linear;
+
+li {
+    padding: 0px;
+}
+
+input {
+    padding: 0px;
 }

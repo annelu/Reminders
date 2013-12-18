@@ -9,7 +9,7 @@ var renderReminders = function(){
     for (var i = 0; i < data.length; i++) {
       var then = Date.parse(data[i].duedate);
       if (then < now) {
-        $('.reminders').append('<div>' + data[i].task + '</div>');
+        $('.reminders').append('<li>' + data[i].task + '</li>');
       }
     }
   })
